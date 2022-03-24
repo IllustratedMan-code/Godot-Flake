@@ -1,0 +1,45 @@
+{
+  "nodes": {
+    "Godot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1647977962,
+        "narHash": "sha256-kGyX6O5O2qxj1tWEvJr0oHrnEWCJBb4wvwUXyAKa07k=",
+        "owner": "IllustratedMan-code",
+        "repo": "godot",
+        "rev": "8217b707721fe1119abda036898214cd15b53156",
+        "type": "github"
+      },
+      "original": {
+        "owner": "IllustratedMan-code",
+        "ref": "fix-alsa-detect-linuxbsd",
+        "repo": "godot",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1647800324,
+        "narHash": "sha256-rjwoxrk16zfrcO5Torh6CbAd5GHsHrXw+EwxOvh9AUI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "9bc841fec1c0e8b9772afa29f934d2c7ce57da8e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "Godot": "Godot",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
