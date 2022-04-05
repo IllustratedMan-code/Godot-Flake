@@ -3,16 +3,15 @@
     "Godot": {
       "flake": false,
       "locked": {
-        "lastModified": 1647977962,
-        "narHash": "sha256-kGyX6O5O2qxj1tWEvJr0oHrnEWCJBb4wvwUXyAKa07k=",
-        "owner": "IllustratedMan-code",
+        "lastModified": 1649160219,
+        "narHash": "sha256-F/R0WTmzsEfnQhHTrYikb81947HY86OA8Ylzl8dIVOs=",
+        "owner": "godotengine",
         "repo": "godot",
-        "rev": "8217b707721fe1119abda036898214cd15b53156",
+        "rev": "f00803b8a5e1e8c584424bc2e86f83f061857dad",
         "type": "github"
       },
       "original": {
-        "owner": "IllustratedMan-code",
-        "ref": "fix-alsa-detect-linuxbsd",
+        "owner": "godotengine",
         "repo": "godot",
         "type": "github"
       }

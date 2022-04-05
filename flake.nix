@@ -3,7 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     Godot = {
-      url = "github:IllustratedMan-code/godot/fix-alsa-detect-linuxbsd";
+      url = "github:godotengine/godot";
       flake = false;
     };
   };
