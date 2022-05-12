@@ -20,7 +20,10 @@
         name = "godot";
         src = Godot;
         nativeBuildInputs = [
+
           pkgs.pkg-config
+          pkgs.xorg.libXi
+          pkgs.xorg.libXfixes
         ];
 
         buildInputs = [
@@ -48,21 +51,20 @@
           pkgs.libGLU
           pkgs.alsa-lib.dev
         ];
-        sconsFlags = "target=release_debug platform=linuxbsd";
+        patches = [  ];
+        sconsFlags = "target=release_debug platform=linuxbsd -j8";
+        enableParallelBuilding = true;
+
         preConfigure = ''
-          sconsFlags+=" ${
-            lib.concatStringsSep " "
-            (lib.mapAttrsToList (k: v: "${k}=${builtins.toJSON v}") options)
-          }"
+                    sconsFlags+=" ${
+                      lib.concatStringsSep " "
+                      (lib.mapAttrsToList (k: v: "${k}=${builtins.toJSON v}") options)
+                    }"
         '';
-
         outputs = [ "out" "dev" "man" ];
-
         installPhase = ''
           mkdir -p "$out/bin"
-          cp bin/godot.* $out/bin/godot
-          mkdir "$dev"
-          cp -r modules/gdnative/include $dev
+          cp -r bin/godot.* $out/bin/godot
           mkdir -p "$man/share/man/man6"
           cp misc/dist/linux/godot.6 "$man/share/man/man6/"
           mkdir -p "$out"/share/{applications,icons/hicolor/scalable/apps}

@@ -1,0 +1,58 @@
+From 42aab3c8baf683ca0609aac8a3c7ed81fec4ed2b Mon Sep 17 00:00:00 2001
+From: David Lewis <davidalewis00@gmail.com>
+Date: Fri, 22 Apr 2022 10:33:55 -0400
+Subject: [PATCH 3/3] godot-compile fixes
+
+---
+ platform/linuxbsd/detect.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/platform/linuxbsd/detect.py b/platform/linuxbsd/detect.py
+index 39f9b99108..53bb925476 100644
+--- a/platform/linuxbsd/detect.py
++++ b/platform/linuxbsd/detect.py
+@@ -226,6 +226,9 @@ def configure(env):
+     env.ParseConfig("pkg-config xrandr --cflags --libs")
+     env.ParseConfig("pkg-config xrender --cflags --libs")
+     env.ParseConfig("pkg-config xi --cflags --libs")
++    env.ParseConfig("pkg-config xfixes --cflags")
++    env.ParseConfig("pkg-config glu --cflags")
++
+ 
+     if env["touch"]:
+         env.Append(CPPDEFINES=["TOUCH_ENABLED"])
+@@ -319,6 +322,7 @@ def configure(env):
+     if os.system("pkg-config --exists alsa") == 0:  # 0 means found
+         env["alsa"] = True
+         env.Append(CPPDEFINES=["ALSA_ENABLED", "ALSAMIDI_ENABLED"])
++        env.ParseConfig("pkg-config alsa --cflags")  # Only cflags, we dlopen the library.
+     else:
+         print("Warning: ALSA libraries not found. Disabling the ALSA audio driver.")
+ 
+@@ -326,6 +330,7 @@ def configure(env):
+         if os.system("pkg-config --exists libpulse") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["PULSEAUDIO_ENABLED"])
+             env.ParseConfig("pkg-config --cflags libpulse")
++            env.ParseConfig("pkg-config libpulse --cflags")  # Only cflags, we dlopen the library.
+         else:
+             print("Warning: PulseAudio development libraries not found. Disabling the PulseAudio audio driver.")
+ 
+@@ -333,6 +338,7 @@ def configure(env):
+         if os.system("pkg-config --exists dbus-1") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["DBUS_ENABLED"])
+             env.ParseConfig("pkg-config --cflags --libs dbus-1")
++            env.ParseConfig("pkg-config dbus-1 --cflags --libs")
+         else:
+             print("Warning: D-Bus development libraries not found. Disabling screensaver prevention.")
+ 
+@@ -341,6 +347,7 @@ def configure(env):
+         if env["udev"]:
+             if os.system("pkg-config --exists libudev") == 0:  # 0 means found
+                 env.Append(CPPDEFINES=["UDEV_ENABLED"])
++                env.ParseConfig("pkg-config libudev --cflags")  # Only cflags, we dlopen the library.
+             else:
+                 print("Warning: libudev development libraries not found. Disabling controller hotplugging support.")
+     else:
+-- 
+2.35.1
+
