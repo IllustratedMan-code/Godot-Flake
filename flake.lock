@@ -1,13 +1,13 @@
 {
   "nodes": {
-    "Godot": {
+    "godot": {
       "flake": false,
       "locked": {
-        "lastModified": 1652383380,
-        "narHash": "sha256-qHODmVLoK61vyns/RU7meU/L1CYwlgsICTd1m7qV4Iw=",
+        "lastModified": 1658153989,
+        "narHash": "sha256-X7Io/G1ASkkrJjgMwy7Gvwc2NAwF5fcWrrNcw6GD1hM=",
         "owner": "godotengine",
         "repo": "godot",
-        "rev": "947a1fa0903e9c334ff1623afb79c9a139166a3f",
+        "rev": "ee53a5161c8ce94ba2a06729d9d30099e74ba942",
         "type": "github"
       },
       "original": {
@@ -18,23 +18,21 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1650161686,
-        "narHash": "sha256-70ZWAlOQ9nAZ08OU6WY7n4Ij2kOO199dLfNlvO/+pf8=",
-        "owner": "nixos",
+        "lastModified": 1658119717,
+        "narHash": "sha256-4upOZIQQ7Bc4CprqnHsKnqYfw+arJeAuU+QcpjYBXW0=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1ffba9f2f683063c2b14c9f4d12c55ad5f4ed887",
+        "rev": "9eb60f25aff0d2218c848dd4574a0ab5e296cabe",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "root": {
       "inputs": {
-        "Godot": "Godot",
+        "godot": "godot",
         "nixpkgs": "nixpkgs"
       }
     }

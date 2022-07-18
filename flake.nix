@@ -1,80 +1,55 @@
 {
-  description = "A flake for building Godot from the master branch";
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    Godot = {
-      url = "github:godotengine/godot";
-      flake = false;
+    inputs = {
+        godot.url = "github:godotengine/godot";
+        godot.flake = false;
     };
-  };
-  outputs = { self, nixpkgs, Godot }: {
-    defaultPackage.x86_64-linux =
-      with import nixpkgs { system = "x86_64-linux"; };
-      let
-        options = {
-          pulseaudio = true;
-          udev = true;
+    outputs = {self, nixpkgs, ...}@inputs: 
+        let
+            system = "x86_64-linux";
+            pkgs = import nixpkgs{inherit system;};
+        in
+    {
+        packages."${system}" = with pkgs; {
+            default = stdenv.mkDerivation rec{
+                name = "godot";
+                src = inputs.godot;
+                nativeBuildInputs = [
+                    scons
+                    pkg-config
+                    xorg.libX11
+                    xorg.libXcursor
+                    xorg.libXinerama
+                    xorg.libXrandr
+                    xorg.libXrender
+                    xorg.libXi
+                    xorg.libXext
+                    xorg.libXfixes
+                    udev
+                    systemd
+                    systemd.dev
+                    libpulseaudio
+                    freetype
+                    openssl
+                    alsa-lib
+                    libGLU
+                    zlib
+                    yasm
+
+                ];
+                patchPhase = ''
+                    substituteInPlace platform/linuxbsd/detect.py --replace 'pkg-config xi ' 'pkg-config xi xfixes '
+                '';
+                enableParallelBuilding = true;
+                buildInputs = nativeBuildInputs;
+                
+                sconsFlags = "platform=linuxbsd";
+                LIBRARY_PATH = "${xorg.libXfixes}";
+                installPhase = ''
+                    mkdir -p "$out/bin"
+                    cp bin/godot.* $out/bin/godot
+                '';
+            };
         };
-      in
-      stdenv.mkDerivation {
-        name = "godot";
-        src = Godot;
-        nativeBuildInputs = [
 
-          pkgs.pkg-config
-          pkgs.xorg.libXi
-          pkgs.xorg.libXfixes
-        ];
-
-        buildInputs = [
-          pkgs.pkg-config
-          pkgs.udev
-          pkgs.systemd
-          pkgs.systemd.dev
-          pkgs.gcc
-          pkgs.python3
-          pkgs.xorg.xorgserver
-          pkgs.xorg.libX11.dev
-          pkgs.xorg.libXcursor
-          pkgs.xorg.libXrandr
-          pkgs.xorg.libXinerama
-          pkgs.xorg.libXi
-          pkgs.xorg.libXext
-          pkgs.xorg.libXfixes
-          pkgs.freetype
-          pkgs.openssl
-          pkgs.zlib
-          pkgs.libpulseaudio
-          pkgs.yasm
-          pkgs.mesa
-          pkgs.scons
-          pkgs.libGLU
-          pkgs.alsa-lib.dev
-        ];
-        patches = [  ];
-        sconsFlags = "target=release_debug platform=linuxbsd -j8";
-        enableParallelBuilding = true;
-
-        preConfigure = ''
-                    sconsFlags+=" ${
-                      lib.concatStringsSep " "
-                      (lib.mapAttrsToList (k: v: "${k}=${builtins.toJSON v}") options)
-                    }"
-        '';
-        outputs = [ "out" "dev" "man" ];
-        installPhase = ''
-          mkdir -p "$out/bin"
-          cp -r bin/godot.* $out/bin/godot
-          mkdir -p "$man/share/man/man6"
-          cp misc/dist/linux/godot.6 "$man/share/man/man6/"
-          mkdir -p "$out"/share/{applications,icons/hicolor/scalable/apps}
-          cp misc/dist/linux/org.godotengine.Godot.desktop "$out/share/applications/"
-          cp icon.svg "$out/share/icons/hicolor/scalable/apps/godot.svg"
-          cp icon.png "$out/share/icons/godot.png"
-          substituteInPlace "$out/share/applications/org.godotengine.Godot.desktop" \
-            --replace "Exec=godot" "Exec=$out/bin/godot"
-        '';
-      };
-  };
-
+    };
 }
