@@ -8,7 +8,7 @@
             system = "x86_64-linux";
             pkgs = import nixpkgs{inherit system;};
         in
-    {
+    rec{
         packages."${system}" = with pkgs; {
             default = stdenv.mkDerivation rec{
                 name = "godot";
@@ -16,6 +16,7 @@
                 nativeBuildInputs = [
                     scons
                     pkg-config
+                    vulkan-loader
                     xorg.libX11
                     xorg.libXcursor
                     xorg.libXinerama
@@ -34,8 +35,9 @@
                     libGLU
                     zlib
                     yasm
-
+                    autoPatchelfHook
                 ];
+                runtimeDependencies = [vulkan-loader libpulseaudio];
                 patchPhase = ''
                     substituteInPlace platform/linuxbsd/detect.py --replace 'pkg-config xi ' 'pkg-config xi xfixes '
                 '';
@@ -43,12 +45,15 @@
                 buildInputs = nativeBuildInputs;
                 
                 sconsFlags = "platform=linuxbsd";
-                LIBRARY_PATH = "${xorg.libXfixes}";
                 installPhase = ''
                     mkdir -p "$out/bin"
                     cp bin/godot.* $out/bin/godot
                 '';
             };
+        };
+        devShells."${system}".head = with pkgs; mkShell{
+            nativeBuildInputs = [patchelf nodePackages.http-server];
+            runtimeDependencies = nativeBuildInputs;
         };
 
     };
