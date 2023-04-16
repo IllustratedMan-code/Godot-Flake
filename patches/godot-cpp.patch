@@ -1,0 +1,13 @@
+diff --git a/SConstruct b/SConstruct
+index 27ee137..10fe07d 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -53,7 +53,7 @@ else:
+ 
+ # Default tools with no platform defaults to gnu toolchain.
+ # We apply platform specific toolchains via our custom tools.
+-env = Environment(tools=["default"], PLATFORM="")
++env = Environment(tools=["default"], PLATFORM="", ENV={"PATH" : os.environ["PATH"]})
+ 
+ # Default num_jobs to local cpu count if not user specified.
+ # SCons has a peculiarity where user-specified options won't be overridden

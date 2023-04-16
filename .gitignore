@@ -1,0 +1,5 @@
+#!/usr/bin/git
+
+## NIX
+# result from `nix build`
+result
